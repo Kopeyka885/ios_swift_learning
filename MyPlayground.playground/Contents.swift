@@ -45,6 +45,15 @@ func unwrapFloat3(_ number: Float?){
     }
 }
 
+func unwrapFloatWithGuard(_ number: Float?){
+    guard let number = number else
+    {
+        print("Variable can't be unwrapped")
+        return
+    }
+    print(number)
+}
+
 unwrapFloat(number:x)
 unwrapFloat(number: y)
 print()
@@ -53,6 +62,9 @@ unwrapFloat2(number: y)
 print()
 unwrapFloat3(x)
 unwrapFloat3(y)
+print()
+unwrapFloatWithGuard(x)
+unwrapFloatWithGuard(y)
 print()
 
 //TODO: Напишите программу для вывода первых 15 чисел последовательности Фибоначчи
@@ -95,12 +107,10 @@ func bubbleSort1(inputArray: [Int]) -> [Int]{
 
 //не выделяем лишнюю память
 func bubbleSort2(inputArray: inout [Int]){
-    for i in 1...(inputArray.count - 1){
-        for j in 0...(inputArray.count - i - 1){
+    for i in 1 ..< inputArray.count{
+        for j in 0 ..< (inputArray.count - i){
             if inputArray[j] > inputArray[j+1]{
-                let tmp = inputArray[j]
-                inputArray[j] = inputArray[j+1]
-                inputArray[j+1] = tmp
+                inputArray.swapAt(j, j+1)
             }
         }
     }
@@ -118,15 +128,20 @@ print()
 //TODO: Напишите программу, решающую задачу: есть входящая строка формата "abc123", где сначала идет любая последовательность букв, потом число. Необходимо получить новую строку, в конце которой будет число на единицу больше предыдущего, то есть "abc124".
 print("---------------------------------------------------------------------------------------------")
 
-//многовато форс анврапов по-моему
+// looks like хуйня, что-то мне совсем не нравится, но как сделать лучше не ебу, в while не запихивается дополнительное условие, if/else не меняется на тернарник -_- . Зато теперь все безопасно вроде
 
 func increaseEndingNumberOfString(inputString: String) -> String{
     var outputString = inputString
-    var str = String()
-    repeat{
-        str.insert(outputString.popLast()!, at: str.startIndex)
-    } while (outputString.last!.isNumber && outputString.last != nil)
-    outputString += String(Int(str)! + 1)
+    var str = ""
+    while let lastCharacter = outputString.popLast(){
+        if lastCharacter.isNumber{
+            str.insert(lastCharacter, at: str.startIndex)
+        } else {
+            break
+        }
+    if let convertedString = Int(str){
+        outputString += String(convertedString + 1)
+    }
     return outputString
 }
 
@@ -179,8 +194,8 @@ print()
 print("---------------------------------------------------------------------------------------------")
 
 class Rectangle{
-    var width: Double = 0.0
-    var length: Double = 0.0
+    var width = 0.0
+    var length = 0.0
     var perimetr: Double {
         2 * (width + length)
     }
@@ -206,3 +221,7 @@ extension Rectangle{
 
 print(rectangle.square)
 print()
+
+
+let str: String?
+str = "Kamil QA"
